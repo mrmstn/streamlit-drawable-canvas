@@ -6,6 +6,10 @@ class TextTool extends FabricTool {
   strokeWidth: number = 10
   textColor: string = "#ffffff"
   currentText: fabric.Textbox = new fabric.Textbox("")
+  currentStartX: number = 0
+  currentStartY: number = 0
+  _minLength: number = 10
+
 
   configureCanvas({
                     strokeWidth,
@@ -14,6 +18,8 @@ class TextTool extends FabricTool {
     this._canvas.isDrawingMode = false
     this._canvas.selection = false
     this._canvas.forEachObject((o) => (o.selectable = o.evented = false))
+
+    this._minLength = strokeWidth
 
     this.strokeWidth = strokeWidth
     this.textColor = strokeColor
@@ -44,6 +50,9 @@ class TextTool extends FabricTool {
     }) as fabric.Textbox
 
     if (!textObject) {
+      this.currentStartX = pointer.x
+      this.currentStartY = pointer.y
+
       this.currentText = new fabric.Textbox("", {
         left: pointer.x,
         top: pointer.y,
@@ -71,6 +80,19 @@ class TextTool extends FabricTool {
   onMouseMove(o: any) {
     if (!this.isMouseDown) return
     let canvas = this._canvas
+    let pointer = canvas.getPointer(o.e)
+    if (this.currentStartX > pointer.x) {
+      this.currentText.set({ left: Math.abs(pointer.x) })
+    }
+    if (this.currentStartY > pointer.y) {
+      this.currentText.set({ top: Math.abs(pointer.y) })
+    }
+    let _width = Math.abs(this.currentStartX - pointer.x)
+    let _height = Math.abs(this.currentStartY - pointer.y)
+    this.currentText.set({
+      width: Math.max(_width, this._minLength * 2),
+      height: Math.max(_height, this._minLength * 2),
+    })
     this.currentText.setCoords()
     canvas.renderAll()
   }
