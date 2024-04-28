@@ -1,10 +1,13 @@
 [build-system]
-requires = ["setuptools>=61.0"]
+requires = [
+    "setuptools>=60",
+    "setuptools-scm>=8.0"]
 build-backend = "setuptools.build_meta"
+
+[tool.setuptools_scm]
 
 [project]
 name = "streamlit-drawable-canvas-mrmstn"
-version = "0.9.3"
 authors = [
     { name = "Fanilo ANDRIANASOLO", email = "contact@andfanilo.com" },
     { name = "Michael Ramstein", email = "mail@tty7.ch" },
@@ -17,6 +20,10 @@ classifiers = [
     "Programming Language :: Python :: 3",
     "License :: OSI Approved :: MIT License",
     "Operating System :: OS Independent",
+]
+dynamic = [
+    "dependencies",
+    "version"
 ]
 
 [project.urls]
