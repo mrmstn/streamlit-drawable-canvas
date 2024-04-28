@@ -44,10 +44,9 @@ jobs:
         run: echo "NIGHTLY_VERSION=${{ github.ref_name }}" >> $GITHUB_ENV
       - name: Build package
         run: |
-          python -m build --sdist --wheel --outdir dist/
+          pipenv run python -m build --sdist --wheel --outdir dist/
         env:
           SETUPTOOLS_SCM_PRETEND_VERSION: ${{ env.NIGHTLY_VERSION }}
-        shell: pipenv shell
       - name: Create GitHub Release
         #if: github.event_name == 'release'
         uses: softprops/action-gh-release@v1
