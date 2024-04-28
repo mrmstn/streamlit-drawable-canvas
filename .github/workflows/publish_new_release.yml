@@ -6,6 +6,7 @@ on:
       release_type:
         description: 'Type of Release (preview or real)'
         required: true
+        type: choice
         options:
         - Release
         - Preview
