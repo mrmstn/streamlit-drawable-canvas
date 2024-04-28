@@ -1,0 +1,24 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "streamlit-drawable-canvas-mrmstn"
+version = "0.9.3"
+authors = [
+    { name = "Fanilo ANDRIANASOLO", email = "contact@andfanilo.com" },
+    { name = "Michael Ramstein", email = "mail@tty7.ch" },
+]
+description = "A Streamlit custom component for a free drawing canvas using Fabric.js."
+readme = "README.md"
+license = { file = "LICENSE" }
+requires-python = ">=3.8"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+
+[project.urls]
+Homepage = "https://github.com/mrmstn/streamlit-drawable-canvas"
+Issues = "https://github.com/mrmstn/streamlit-drawable-canvas/issues"
