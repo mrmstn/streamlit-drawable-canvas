@@ -1,4 +1,4 @@
-name: Upload Python Package and Publish GitHub Release
+name: Build and Release Python Package
 
 on:
   workflow_dispatch:
@@ -6,12 +6,15 @@ on:
       release_type:
         description: 'Type of Release (preview or real)'
         required: true
-        default: 'preview'
+        options:
+        - Release
+        - Preview
+        default: 'Preview'
   release:
     types: [created]
 
 jobs:
-  deploy:
+  build_and_release:
     runs-on: ubuntu-latest
 
     steps:
@@ -37,23 +40,18 @@ jobs:
         env:
           NODE_OPTIONS: --openssl-legacy-provider
       - name: Generate nightly build version
-        if: github.event_name == 'workflow_dispatch' && github.event.inputs.release_type == 'preview'
+        if: github.event_name == 'workflow_dispatch' && github.event.inputs.release_type == 'Preview'
         run: echo "NIGHTLY_VERSION=0.0.0.dev$(date +%Y%m%d)" >> $GITHUB_ENV
       - name: Set version for real release
-        if: github.event_name == 'release'
+        if: github.event_name == 'release' || github.event.inputs.release_type == 'Release'
         run: echo "NIGHTLY_VERSION=${{ github.ref_name }}" >> $GITHUB_ENV
       - name: Build package
         run: |
           pipenv run python -m build --sdist --wheel --outdir dist/
         env:
           SETUPTOOLS_SCM_PRETEND_VERSION: ${{ env.NIGHTLY_VERSION }}
-      - name: Create GitHub Release
-        #if: github.event_name == 'release'
-        uses: softprops/action-gh-release@v1
+      - name: Upload Python package artifact
+        uses: actions/upload-artifact@v3
         with:
-          files: dist/*
-          tag_name: ${{ github.ref }}
-          release_name: Release ${{ github.ref }}
-          body: Release of version ${{ env.NIGHTLY_VERSION }}
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          name: python-package
+          path: dist/*
