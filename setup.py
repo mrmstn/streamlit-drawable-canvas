@@ -1,6 +1,6 @@
 from os.path import dirname
 from os.path import join
-import setuptools
+from setuptools import setup, find_packages
 
 
 def readme() -> str:
@@ -13,16 +13,23 @@ def readme() -> str:
     return open(join(dirname(__file__), "README.md")).read()
 
 
-setuptools.setup(
-    name="streamlit-drawable-canvas",
+setup(
+    name="streamlit-drawable-canvas-mrmstn",
     author="Fanilo ANDRIANASOLO",
     author_email="contact@andfanilo.com",
     description="A Streamlit custom component for a free drawing canvas using Fabric.js.",
     long_description=readme(),
     long_description_content_type="text/markdown",
     url="https://github.com/andfanilo/streamlit-drawable-canvas",
-    packages=setuptools.find_packages(),
-    include_package_data=True,
+    packages=['streamlit_drawable_canvas'],
+    package_data={
+        # Only specify folders and files you want to include
+        'streamlit_drawable_canvas': [
+            'frontend/build/static/css/*',
+            'frontend/build/static/js/*'
+        ],
+    },
+    include_package_data=False,
     classifiers=[],
     python_requires=">=3.6",
     install_requires=[
