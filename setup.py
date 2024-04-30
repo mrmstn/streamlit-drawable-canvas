@@ -25,7 +25,7 @@ setup(
     package_data={
         # Only specify folders and files you want to include
         'streamlit_drawable_canvas': [
-            'frontend/build/*'
+            'frontend/build/**'
         ],
     },
     include_package_data=False,
