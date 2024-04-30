@@ -1,18 +1,6 @@
 name: Build and Release Python Package
 
-on:
-  workflow_dispatch:
-    inputs:
-      release_type:
-        description: 'Type of Release (preview or real)'
-        required: true
-        type: choice
-        options:
-        - Release
-        - Preview
-        default: 'Preview'
-  release:
-    types: [created]
+on: push
 
 jobs:
   build_and_release:
@@ -41,10 +29,10 @@ jobs:
         env:
           NODE_OPTIONS: --openssl-legacy-provider
       - name: Generate nightly build version
-        if: github.event_name == 'workflow_dispatch' && github.event.inputs.release_type == 'Preview'
+        if: !startsWith(github.ref, 'refs/tags/')
         run: echo "NIGHTLY_VERSION=0.0.0.dev$(date +%Y%m%d)" >> $GITHUB_ENV
       - name: Set version for real release
-        if: github.event_name == 'release' || github.event.inputs.release_type == 'Release'
+        if: startsWith(github.ref, 'refs/tags/')
         run: echo "NIGHTLY_VERSION=${{ github.ref_name }}" >> $GITHUB_ENV
       - name: Build package
         run: |
@@ -56,3 +44,10 @@ jobs:
         with:
           name: python-package
           path: dist/*
+      - name: Create GitHub Release
+        if: startsWith(github.ref, 'refs/tags/')
+        uses: softprops/action-gh-release@v1
+        with:
+          files: dist/*
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
