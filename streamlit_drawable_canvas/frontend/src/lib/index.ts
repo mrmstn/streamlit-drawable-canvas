@@ -7,6 +7,7 @@ import RectTool from "./rect"
 import TransformTool from "./transform"
 import PointTool from "./point"
 import TextTool from "./text";
+import EmojiTool from "./emoji";
 
 // TODO: Should make TS happy on the Map of selectedTool --> FabricTool
 const tools: any = {
@@ -17,7 +18,8 @@ const tools: any = {
   rect: RectTool,
   transform: TransformTool,
   point: PointTool,
-  text: TextTool
+  text: TextTool,
+  emoji: EmojiTool,
 }
 
 export { tools, FabricTool }
