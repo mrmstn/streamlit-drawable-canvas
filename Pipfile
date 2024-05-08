@@ -6,6 +6,10 @@ name = "pypi"
 [packages]
 setuptools = "*"
 build = "*"
+streamlit = "*"
+pillow = "*"
+numpy = "*"
+svgpathtools = "*"
 
 [dev-packages]
 

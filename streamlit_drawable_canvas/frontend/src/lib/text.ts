@@ -65,12 +65,12 @@ class TextTool extends FabricTool {
         editable: true,
         evented: false,
       })
-      if (_clicked === 0) {
+      if (_clicked === 0 || o.e instanceof TouchEvent) {
         canvas.add(this.currentText)
         canvas.setActiveObject(this.currentText)
         this.currentText.enterEditing()
       }
-    } else if (_clicked === 0) {
+    } else if (_clicked === 0 || o.e instanceof TouchEvent) {
       // If the text object is clicked, make it the active object
       canvas.setActiveObject(textObject)
       textObject.enterEditing()
